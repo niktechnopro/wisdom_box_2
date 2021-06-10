@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
-import { View, Text, TextInput, StyleSheet, useWindowDimensions, TouchableOpacity, Animated } from "react-native"; 
+import { View, Text, TextInput, StyleSheet, useWindowDimensions, 
+    TouchableOpacity, Animated, PanResponder } from "react-native"; 
 
 const initToDoObj = {
     todo: "",
@@ -7,12 +8,37 @@ const initToDoObj = {
 }
 
 const TodoList = () => {
-    const dimensions = useWindowDimensions();
+    const dimensions = useWindowDimensions();//has a listener in it already - great for functional component
 
     let helperArray = [];
     for(let property in dimensions){
         helperArray.push(property);
     }
+
+    const pan = useRef(new Animated.ValueXY()).current;
+
+    const panResponder = useRef(
+        PanResponder.create({
+            onMoveShouldSetPanResponder: () => true,
+            onPanResponderGrant: () => {
+                pan.setOffset({//if not to set that - it will alway start from 0 value 
+                    x: pan.x._value,
+                    y: pan.y._value
+                });
+            },
+            onPanResponderMove: Animated.event(
+                [
+                    null,
+                    { dx: pan.x, dy: pan.y },
+                ],
+                {useNativeDriver: false}//fixes issue require second argument for options
+            ),
+            onPanResponderRelease: (evt, gesture) => {
+                // console.log("releasing gesture", evt, gesture);
+                pan.flattenOffset();
+            }
+        })
+    ).current;
 
     const animInOut = useRef(new Animated.Value(-dimensions.width)).current;
 
@@ -123,6 +149,14 @@ const TodoList = () => {
                     })
                 }
             </View>
+            <Animated.View
+                style={[styles.square, {
+                transform: [{ translateX: pan.x }, { translateY: pan.y }]
+                }]}
+                {...panResponder.panHandlers}
+            />
+                {/* <View style={styles.square} /> */}
+            {/* </Animated.View> */}
         </View>
     )
 }
@@ -142,5 +176,10 @@ const styles = StyleSheet.create({
         justifyContent: "center", 
         backgroundColor: "grey", 
         borderRadius: 5
+    },
+    square: {
+       width: 100,
+       height: 100,
+       backgroundColor: "red" 
     }
 })
