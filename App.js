@@ -26,12 +26,15 @@ import {
 
 import AppWrapper from "./components/AppWrapper";
 
+import TodoList from "./components/TodoList";
+
 const App: () => React$Node = () => {
   return (
     <>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView>
-        <AppWrapper />
+        <TodoList />
+        {/* <AppWrapper /> */}
 
 
 

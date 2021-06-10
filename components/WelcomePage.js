@@ -14,7 +14,7 @@ const AnimatedProgressBar = ({setProgress, available_width}) => {
 			progress,
 			{
 				toValue: 1,
-				duration: 23000,
+				duration: 6000,
 				easing: Easing.linear,
 				useNativeDriver: false,//can not have true, because using interpolation and property, not supported, use react-native-reanimated for performance
 			}
