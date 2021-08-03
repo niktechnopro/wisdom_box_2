@@ -17,24 +17,21 @@ import {
 } from 'react-native';
 
 import {
-  Header,
-  LearnMoreLinks,
+  // Header,
+  // LearnMoreLinks,
   Colors,
-  DebugInstructions,
-  ReloadInstructions,
+  // DebugInstructions,
+  // ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
 import AppWrapper from "./components/AppWrapper";
-
-import TodoList from "./components/TodoList";
 
 const App: () => React$Node = () => {
   return (
     <>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView>
-        <TodoList />
-        {/* <AppWrapper /> */}
+        <AppWrapper />
 
 
 

@@ -5,6 +5,7 @@ import MainAppPage from "./MainAppPage";
 import { isTTSAvailable, loadDefaultTTS } from "../utils/SpeechEngineModule";
 import SettingsPage from "./SettingsPage";
 
+
 class AppWrapper extends Component{
   constructor(props){
     super(props);
@@ -59,10 +60,10 @@ class AppWrapper extends Component{
 
   changePageTo = (pagePointer) => {//this is sort of analogy of router
     if(pagePointer === "MainAppPage"){
-      // this.setState({
-      //   page: "MainAppPage",
-      //   shouldShowSettings: false
-      // });
+      this.setState({
+        page: "MainAppPage",
+        shouldShowSettings: false
+      });
     }
     else if(pagePointer === "SettingsPage"){
       // this.setState({page: "SettingsPage"});

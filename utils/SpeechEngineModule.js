@@ -26,7 +26,7 @@ export const loadDefaultTTS = () => {
     getData("tts")
     .then(result => {
         console.log("result: ", result);
-        if(result){
+        if(result){//if something in results - load it, else - resetDefault TTS
             defaults = JSON.parse(result);
             console.log("use this result object: ", defaults);
         }
@@ -71,3 +71,4 @@ export const saveDefaults = () => {
     console.log("defaults: ", defaults)
     storeData("tts", defaults);
 }
+

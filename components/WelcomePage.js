@@ -69,7 +69,7 @@ const AnimatedProgressBar = ({setProgress, available_width}) => {
 }
 
 const PulsingDots = ({isLandscape}) => {
-	const dotScales = [useRef(new Animated.Value(0)).current, useRef(new Animated.Value(0)).current, useRef(new Animated.Value(0)).current];
+	const dotScales = [useRef(new Animated.Value(0)).current, useRef(new Animated.Value(0)).current, useRef(new Animated.Value(0)).current];//setting the array of start points for each dot
 
 	useEffect(()=>{//call it on mount
 		dotsAnimation();
