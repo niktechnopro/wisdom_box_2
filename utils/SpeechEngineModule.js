@@ -22,13 +22,13 @@ export const setDefaultTTS = () => {
 }
 
 export const loadDefaultTTS = () => {
-    console.log("loadDefaultTTS: ")
+    // console.log("loadDefaultTTS: ")
     getData("tts")
     .then(result => {
-        console.log("result: ", result);
+        // console.log("result: ", result);
         if(result){//if something in results - load it, else - resetDefault TTS
             defaults = JSON.parse(result);
-            console.log("use this result object: ", defaults);
+            // console.log("use this result object: ", defaults);
         }
         else{
             setDefaultTTS();
@@ -68,7 +68,7 @@ export const setVoiceParameters = (rate, pitch, voice_id) => {
 }
 
 export const saveDefaults = () => {
-    console.log("defaults: ", defaults)
+    // console.log("defaults: ", defaults)
     storeData("tts", defaults);
 }
 

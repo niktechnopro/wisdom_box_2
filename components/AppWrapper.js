@@ -4,7 +4,7 @@ import WelcomePage from "./WelcomePage";
 import MainAppPage from "./MainAppPage";
 import { isTTSAvailable, loadDefaultTTS } from "../utils/SpeechEngineModule";
 import SettingsPage from "./SettingsPage";
-import { getData, setData } from "../utils/PersistentStorage";
+import { getData, storeData, removeData } from "../utils/PersistentStorage";
 
 
 class AppWrapper extends Component{
@@ -17,12 +17,13 @@ class AppWrapper extends Component{
       appState: AppState.currentState,
       dimensions: {...Dimensions.get('window'), isLandscape: false},
       shouldShowSettings: false,
-      isFirstLoad: true
-    }
+    },
+    this.isFirstLoad = true;
   }
 
 
   componentDidMount = () => {
+    removeData("isFirstLoad");//just for testing - to remove the key if needed
     isTTSAvailable()//checking if speach engine is available
     .then((result) => {
       if(result === "success"){
@@ -39,22 +40,27 @@ class AppWrapper extends Component{
     })
 
     //check if this is the first load and set the flag if it is
-    getData("isFirstLoad")
-    .then(result => {
-      console.log("isFirstLoad: ", result)
-      if(result){
-        console.log("record found - go to MainAppPage")
-        this.setState({isFirstLoad: false})
-      }
-      else{
-        console.log("no records found - load SettingsPage and set the flag");
-
-      }
-    })
+    this.checkIfFirstLoad();
 
     //appState listener setup
     AppState.addEventListener('change', this.onAppStateChange);
     Dimensions.addEventListener('change', this.onDimensionsChange);
+  }
+
+  checkIfFirstLoad = () => {//set the flag on first load
+    getData("isFirstLoad")
+      .then(result => {
+      console.log("isFirstLoad: ", result)
+        if(result){
+          console.log("record found - go to MainAppPage")
+          this.isFirstLoad = false;
+        }
+        else{
+          console.log("no records found - load SettingsPage and set the flag");
+          //we can make a record - so the next time the APK would go to MainAppPage
+          this.isFirstLoad = true;
+        }
+    })
   }
 
   componentWillUnmount = () => {
@@ -73,14 +79,19 @@ class AppWrapper extends Component{
   }
 
   changePageTo = (pagePointer) => {//this is sort of analogy of router
+    console.log("we are in changePageTo")
     if(pagePointer === "MainAppPage"){
-      if(this.state.isFirstLoad){//if this is first load - redirect to SettingsPage
+      if(this.isFirstLoad){//if this is first load - redirect to SettingsPage
+        console.log("that option")
         this.setState({
           page: "SettingsPage",
-          shouldShowSettings: true
+          shouldShowSettings: true,
+        },()=>{
+           this.isFirstLoad = false;//once first load completed - go reset the key
         })
       }
       else{
+        console.log("this option")
         this.setState({
           page: "MainAppPage",
           shouldShowSettings: false
@@ -96,7 +107,7 @@ class AppWrapper extends Component{
   }
 
   render(){
-    const { page, isSpeechEngineDetected, appState, dimensions, shouldShowSettings, isFirstLoad } = this.state;
+    const { page, isSpeechEngineDetected, appState, dimensions, shouldShowSettings } = this.state;
     // console.log("this.state: ", this.state)
     return(
       <View
@@ -124,7 +135,6 @@ class AppWrapper extends Component{
               <SettingsPage 
                 dimensions = {dimensions}
                 pageChange = {this.changePageTo}
-                isFirstLoad = {isFirstLoad}
               /> 
           }
       </View>

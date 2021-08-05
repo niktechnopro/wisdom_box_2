@@ -60,7 +60,6 @@ export default class SettingsPage extends Component{
 	}
 
     componentDidMount = () => {
-        console.log("loading settings page")
         this.checkSpeechEngineAvailability();
         getAvailableVoices().then(res => {
             this.setState({ voices: res});//set available languate list

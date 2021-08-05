@@ -19,3 +19,13 @@ export const getData = async (key) => {
     }
 }
 
+//for development
+export const removeData = async (key) =>{
+    try {
+        return await AsyncStorage.removeItem(key);
+    } catch(e) {
+        // error reading value
+        console.log("problem getting data");
+    }
+}
+

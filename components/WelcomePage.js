@@ -141,9 +141,9 @@ const WelcomPage = ({dimensions, pageChange}) => {
 	},[dimensions.isLandscape])
 
 	useEffect(() => {
-		// console.log("anything changed? ", isProgressFull)
+		console.log("anything changed? ", isProgressFull)
 		isProgressFull && setTimeout(()=>{
-			// console.log("move to next screen");
+			console.log("move to next screen");
 			pageChange("MainAppPage");
 		},1000);//delay for 1 sec
 	},[isProgressFull])
