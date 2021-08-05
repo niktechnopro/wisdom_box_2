@@ -4,6 +4,7 @@ import WelcomePage from "./WelcomePage";
 import MainAppPage from "./MainAppPage";
 import { isTTSAvailable, loadDefaultTTS } from "../utils/SpeechEngineModule";
 import SettingsPage from "./SettingsPage";
+import { getData, setData } from "../utils/PersistentStorage";
 
 
 class AppWrapper extends Component{
@@ -15,7 +16,8 @@ class AppWrapper extends Component{
       isSpeechEngineDetected: true,
       appState: AppState.currentState,
       dimensions: {...Dimensions.get('window'), isLandscape: false},
-      shouldShowSettings: false
+      shouldShowSettings: false,
+      isFirstLoad: true
     }
   }
 
@@ -36,7 +38,19 @@ class AppWrapper extends Component{
       this.setState({isSpeechEngineDetected: false});
     })
 
-    //detect if any settings were saved already;
+    //check if this is the first load and set the flag if it is
+    getData("isFirstLoad")
+    .then(result => {
+      console.log("isFirstLoad: ", result)
+      if(result){
+        console.log("record found - go to MainAppPage")
+        this.setState({isFirstLoad: false})
+      }
+      else{
+        console.log("no records found - load SettingsPage and set the flag");
+
+      }
+    })
 
     //appState listener setup
     AppState.addEventListener('change', this.onAppStateChange);
@@ -60,10 +74,18 @@ class AppWrapper extends Component{
 
   changePageTo = (pagePointer) => {//this is sort of analogy of router
     if(pagePointer === "MainAppPage"){
-      this.setState({
-        page: "MainAppPage",
-        shouldShowSettings: false
-      });
+      if(this.state.isFirstLoad){//if this is first load - redirect to SettingsPage
+        this.setState({
+          page: "SettingsPage",
+          shouldShowSettings: true
+        })
+      }
+      else{
+        this.setState({
+          page: "MainAppPage",
+          shouldShowSettings: false
+        });
+      }
     }
     else if(pagePointer === "SettingsPage"){
       // this.setState({page: "SettingsPage"});
@@ -74,7 +96,7 @@ class AppWrapper extends Component{
   }
 
   render(){
-    const { page, isSpeechEngineDetected, appState, dimensions, shouldShowSettings } = this.state;
+    const { page, isSpeechEngineDetected, appState, dimensions, shouldShowSettings, isFirstLoad } = this.state;
     // console.log("this.state: ", this.state)
     return(
       <View
@@ -98,10 +120,11 @@ class AppWrapper extends Component{
               />
           }
           {
-            shouldShowSettings && 
+            (shouldShowSettings || (page === "SettingsPage")) && 
               <SettingsPage 
                 dimensions = {dimensions}
                 pageChange = {this.changePageTo}
+                isFirstLoad = {isFirstLoad}
               /> 
           }
       </View>
