@@ -12,7 +12,6 @@ class AppWrapper extends Component{
     super(props);
     this.state={
       page: "WelcomePage",
-      // page: "MainAppPage",
       isSpeechEngineDetected: true,
       appState: AppState.currentState,
       dimensions: {...Dimensions.get('window'), isLandscape: false},
@@ -23,7 +22,7 @@ class AppWrapper extends Component{
 
 
   componentDidMount = () => {
-    removeData("isFirstLoad");//just for testing - to remove the key if needed
+    // removeData("isFirstLoad");//just for testing - to remove the key if needed
     isTTSAvailable()//checking if speach engine is available
     .then((result) => {
       if(result === "success"){
@@ -35,7 +34,7 @@ class AppWrapper extends Component{
       }
     })
     .catch(error => {//not in documentation
-      console.log("speech engine error");
+      console.log("speech engine error: ", error);
       this.setState({isSpeechEngineDetected: false});
     })
 
@@ -50,15 +49,15 @@ class AppWrapper extends Component{
   checkIfFirstLoad = () => {//set the flag on first load
     getData("isFirstLoad")
       .then(result => {
-      console.log("isFirstLoad: ", result)
+      // console.log("isFirstLoad: ", result)
         if(result){
-          console.log("record found - go to MainAppPage")
-          this.isFirstLoad = false;
+          this.isFirstLoad = false;//setting this flag to <false> will redirect flow to MainAppPage
         }
         else{
           console.log("no records found - load SettingsPage and set the flag");
           //we can make a record - so the next time the APK would go to MainAppPage
           this.isFirstLoad = true;
+          storeData("isFirstLoad", true);//store it in memory and do not show the settings screen after Welcome again
         }
     })
   }
@@ -79,10 +78,9 @@ class AppWrapper extends Component{
   }
 
   changePageTo = (pagePointer) => {//this is sort of analogy of router
-    console.log("we are in changePageTo")
+    console.log("we are in changePageTo: ", this.isFirstLoad);
     if(pagePointer === "MainAppPage"){
       if(this.isFirstLoad){//if this is first load - redirect to SettingsPage
-        console.log("that option")
         this.setState({
           page: "SettingsPage",
           shouldShowSettings: true,
@@ -91,7 +89,6 @@ class AppWrapper extends Component{
         })
       }
       else{
-        console.log("this option")
         this.setState({
           page: "MainAppPage",
           shouldShowSettings: false
@@ -153,100 +150,3 @@ const styles = StyleSheet.create({
   }
 });
 
-// As other answers already explain, hooks API was designed to provide function components with functionality that currently is available only in class components. Hooks aren't supposed to used in class components.
-
-// const useScreenDimensions = () => {
-//     const [screenData, setScreenData] = useState(Dimensions.get('screen'));
-  
-//     useEffect(() => {
-//       const onChange = (result) => {
-//         setScreenData(result.screen);
-//       };
-  
-//       Dimensions.addEventListener('change', onChange);
-  
-//       return () => Dimensions.removeEventListener('change', onChange);
-//     });
-  
-//     return {
-//       ...screenData,
-//       isLandscape: screenData.width > screenData.height,
-//     };
-// };
-
-// const useAppState = () => {
-//   const [appState, setAppState] = useState(AppState.currentState);
-
-//   useEffect(() => {
-//     const onAppStateChange = (nextAppState) => {
-//       setAppState(nextAppState)
-//     }
-//     AppState.addEventListener('change', onAppStateChange);
-//     return () => AppState.removeEventListener('change', onAppStateChange);
-//   }, [appState]);
-//   return appState;
-// }
-
-
-
-// const AppWrapper = () => {
-//   const [page, setNextPage] = useState("WelcomePage");
-//   // const [page, setNextPage] = useState("MainAppPage");
-//   // const [page, setNextPage] = useState("SettingsPage");
-//   const [isSpeechEngineDetected, setSpeechEngineDetected] = useState(false);
-//   useEffect(() => {
-//     isTTSAvailable()//checking if speach engine is available
-//     .then((result) => {
-//       if(result === "success"){
-//         setSpeechEngineDetected(true);
-//         setDefaultTTS();
-//       }
-//     })
-//     .catch(error => {//not in documentation
-//       console.log("speech engine error")
-//     })
-//   },[])
-
-//   changePageTo = (pagePointer) => {//this is sort of analogy of router
-//     if(pagePointer === "MainAppPage"){
-//       console.log("load main page");
-//       setNextPage("MainAppPage");
-//     }
-//     else if(pagePointer === "SettingsPage"){
-//       console.log("load settings page");
-//       setNextPage("SettingsPage");
-//     }
-//   }
-
-// 	return(
-// 		<View
-//       style={styles.appWrapper}
-//     >
-//           {
-//             (page === "WelcomePage") && 
-//               <WelcomePage 
-//                 dimensions = {useScreenDimensions()}
-//                 pageChange = {changePageTo}
-//             />}
-//           {
-//             (page === "MainAppPage") && 
-//               <MainAppPage 
-//                 dimensions = {useScreenDimensions()}
-//                 pageChange = {changePageTo}
-//                 isSpeechEngineDetected = {isSpeechEngineDetected}
-//                 appState={useAppState()}
-//               />
-//           }
-//           {
-//             (page === "SettingsPage") && 
-//               <SettingsPage 
-//                 dimensions = {useScreenDimensions()}
-//                 pageChange = {changePageTo}
-//               />
-//           }
-// 		</View>
-// 	)
-// } 
-
-// const screenDimensions = useScreenDimensions();
-// console.log("screenDimensions: ", screenDimensions);
