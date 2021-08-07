@@ -33,7 +33,6 @@ const AvailableVoices = ({voices, setSelectedVoice}) => {
     )
 }
 
-
 const Button = ({text, onPress}) => {
     return(
         <TouchableOpacity
