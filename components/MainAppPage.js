@@ -246,7 +246,7 @@ class MainAppPage extends Component{
                             style={styles.settingsButton}
                             onPress={this.goToSettings}
                         >
-                            <Icon name="wrench" size={35} color="blue" />
+                            <Icon name="cog" size={35} color="blue" />
                         </TouchableOpacity>
                     }
                     <TouchableOpacity
@@ -285,7 +285,7 @@ class MainAppPage extends Component{
                     </View>
                     <View style={styles.switchContainer}>
                         <View 
-                            style={[styles.itemContainer, {width: dimensions.width/2}]}
+                            style={styles.itemContainer}
                         >
                             <Animatable.Text
                                 ref={this.modeText} 
@@ -411,11 +411,11 @@ const styles = StyleSheet.create({
         flexDirection: "row", 
         justifyContent: "space-around", 
         width: "100%", 
-        backgroundColor: "rgba(255,255,255, 0.3)"
+        backgroundColor: "rgba(255,255,255, 0.3)",
     },
     itemContainer:{
         height: 35, 
-        justifyContent: "center"
+        justifyContent: "center",
     },
     modeText:{
         color: "blue", 
@@ -424,12 +424,12 @@ const styles = StyleSheet.create({
     },
     exitButton:{
         position: "absolute",
-        right: 25,
-        top: 60
+        right: 15,
+        top: 30
     },
     settingsButton:{
         position: "absolute",
-        left: 25,
-        top: 60
+        left: 15,
+        top: 30
     }
 })
