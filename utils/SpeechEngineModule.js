@@ -10,11 +10,14 @@ export const defaults = {
 
 //set defaults based on the voices found on machine
 
-export const isTTSAvailable = () => {
+export const isTTSAvailable = () => {//detects if speech engine available or not
     return  Tts.getInitStatus();//returning a promise
 }
 
 export const setDefaultTTS = () => {
+    //we need to check what voices are available and make the first as default
+
+
     Tts.setDefaultLanguage("en-IE");
     Tts.setDefaultRate(0.6);
     Tts.setDefaultPitch(1.0);
@@ -43,10 +46,9 @@ export const speakerTts = (quote) => {
     Tts.speak(quote);
 }
 
-export const getAvailableVoices = async () => {
+export const getAvailableVoices = async () => {//getting voices available on system - will limit to 8 for now
     return await Tts.voices()
     .then(result => {
-        console.log("voices available: ", result);
         return result.filter((value) => (value.notInstalled === false) && (value.networkConnectionRequired === false) && (new RegExp("en").test(value.language))).slice(0,8);
     })
 }
