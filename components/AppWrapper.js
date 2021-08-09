@@ -80,7 +80,7 @@ class AppWrapper extends Component{
   changePageTo = (pagePointer) => {//this is sort of analogy of router
     console.log("we are in changePageTo: ", this.isFirstLoad);
     if(pagePointer === "MainAppPage"){
-      if(this.isFirstLoad){//if this is first load - redirect to SettingsPage
+      if(this.isFirstLoad && this.state.isSpeechEngineDetected){//if this is first load - redirect to SettingsPage
         this.setState({
           page: "SettingsPage",
           shouldShowSettings: true,
@@ -128,10 +128,11 @@ class AppWrapper extends Component{
               />
           }
           {
-            (shouldShowSettings || (page === "SettingsPage")) && 
+            (shouldShowSettings || (page === "SettingsPage")) && isSpeechEngineDetected && 
               <SettingsPage 
                 dimensions = {dimensions}
                 pageChange = {this.changePageTo}
+                isSpeechEngineDetected = {isSpeechEngineDetected}
               /> 
           }
       </View>

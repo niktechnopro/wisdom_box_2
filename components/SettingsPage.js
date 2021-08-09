@@ -50,7 +50,6 @@ export default class SettingsPage extends Component{
 		super(props)
 		this.state = {
 			voices: [],
-			ttsStatus: "initializing",
 			selectedVoice: "en-US",
             voices: [],
 			speechRate: defaults.rate,
@@ -60,7 +59,6 @@ export default class SettingsPage extends Component{
 	}
 
     componentDidMount = () => {
-        this.checkSpeechEngineAvailability();
         this.setVoices();
         Animated.timing(
             this.fadeAnimation,
@@ -70,22 +68,6 @@ export default class SettingsPage extends Component{
               useNativeDriver: true
             }
         ).start();
-    }
-
-    checkSpeechEngineAvailability = () => {
-        isTTSAvailable()
-        .then(result => {
-            if(result === "success"){
-                this.setState({
-                    ttsStatus: "detected"
-                })
-            }
-            else{
-                this.setState({
-                    ttsStatus: "not detected"
-                })
-            }
-        })
     }
 
     setVoices = () => {
@@ -159,7 +141,7 @@ export default class SettingsPage extends Component{
             > 
                     <ScrollView>
                         <Text style={styles.title}>Quick Set Up</Text>
-                        <Text style={styles.label}>Speech Engine: {this.state.ttsStatus}</Text>
+                        <Text style={styles.label}>Speech Engine: {this.props.isSpeechEngineDetected ? "detected" : "not detected"}</Text>
                         <View style={[styles.sliderContainer, {width: sliderWidth}]}>
                             <Text
                                 style={[styles.label, {width: "30%"}]}

@@ -1,12 +1,14 @@
 import Tts from 'react-native-tts';
 import { storeData, getData } from "./PersistentStorage";
 
-export let defaults = {
+export const defaults = {
     language: 'en-IE',
     rate: 0.6,
     pitch: 1.0,
     voice: "en-us-x-sfg#male_2-local"
 };
+
+//set defaults based on the voices found on machine
 
 export const isTTSAvailable = () => {
     return  Tts.getInitStatus();//returning a promise
