@@ -8,7 +8,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { speakerTts } from "../utils/SpeechEngineModule";
 import BackgroundTimer from 'react-native-background-timer';
 
-const interval = 12000; //I'll start with 6 sec interval
+const interval = 12000; //I'll start with 12 sec interval
 
 const Button = ({getNewQuote, disabled}) => {
     return(
@@ -423,13 +423,15 @@ const styles = StyleSheet.create({
         fontWeight: "bold"
     },
     exitButton:{
+        padding: 10,
         position: "absolute",
-        right: 15,
+        right: 10,
         top: 30
     },
     settingsButton:{
+        padding: 10,
         position: "absolute",
-        left: 15,
+        left: 10,
         top: 30
     }
 })

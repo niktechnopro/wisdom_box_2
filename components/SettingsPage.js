@@ -8,7 +8,7 @@ import {
   Animated
 } from "react-native";
 import Slider from '@react-native-community/slider';
-import { isTTSAvailable, setDefaultTTS, getAvailableVoices, setVoiceParameters, speakerTts, saveDefaults } from "../utils/SpeechEngineModule";
+import { isTTSAvailable, setDefaultTTS, getAvailableVoices, setVoiceParameters, speakerTts, saveDefaults, defaults } from "../utils/SpeechEngineModule";
 
 const AvailableVoices = ({voices, setSelectedVoice}) => {
     return(  
@@ -53,17 +53,15 @@ export default class SettingsPage extends Component{
 			ttsStatus: "initializing",
 			selectedVoice: "en-US",
             voices: [],
-			speechRate: 0.6,
-			speechPitch: 1,
+			speechRate: defaults.rate,
+			speechPitch: defaults.pitch,
 		}
         this.fadeAnimation = new Animated.Value(0);
 	}
 
     componentDidMount = () => {
         this.checkSpeechEngineAvailability();
-        getAvailableVoices().then(res => {
-            this.setState({ voices: res});//set available languate list
-        })
+        this.setVoices();
         Animated.timing(
             this.fadeAnimation,
             {
@@ -90,6 +88,19 @@ export default class SettingsPage extends Component{
         })
     }
 
+    setVoices = () => {
+        getAvailableVoices()
+        .then(res => {//if voices found - set it up
+            // console.log("res: ", res);
+            if(res?.length > 0){
+                this.setState({ 
+                    voices: res,
+                    selectedVoice: res[0].name
+                });//set available languate list
+            }
+        })
+    }
+
     setVoice = (voice_id) => {
         this.setState({ selectedVoice: voice_id},()=>{
             setVoiceParameters(null, null, voice_id);
@@ -112,10 +123,10 @@ export default class SettingsPage extends Component{
         switch(action){
             case "reset":
                 this.setState({
-                    speechRate: 0.6,
-			        speechPitch: 1.0,
-                    selectedVoice: "en-US",
+                    speechRate: defaults.rate,
+			        speechPitch: defaults.pitch,
                 },()=>{
+                    this.setVoices();
                     setDefaultTTS();
                 })
                 break;
@@ -145,7 +156,7 @@ export default class SettingsPage extends Component{
                     {opacity: this.fadeAnimation},
                     {transform: [{ translateY: this.fadeAnimation.interpolate({ inputRange: [0, 1], outputRange: [ -this.props.dimensions.height, 0]}) }]}
                 ]}
-            >
+            > 
                     <ScrollView>
                         <Text style={styles.title}>Quick Set Up</Text>
                         <Text style={styles.label}>Speech Engine: {this.state.ttsStatus}</Text>
@@ -206,7 +217,7 @@ export default class SettingsPage extends Component{
                                 text="Reset"
                             />
                             <Button 
-                                onPress={(e)=>this.onButtonPress("save")}
+                                onPress={()=>this.onButtonPress("save")}
                                 text="Save/Go"
                             />
                         </View>
@@ -282,8 +293,7 @@ const styles = StyleSheet.create({
     },
     button: {
         alignItems: 'center',
-        width: 140,
-        padding: 10,
+        padding: 15,
         justifyContent: 'center', 
         backgroundColor: 'rgba(0, 122, 255, 1)',
         borderRadius: 30,
