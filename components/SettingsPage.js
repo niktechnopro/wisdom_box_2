@@ -78,6 +78,8 @@ export default class SettingsPage extends Component{
                 this.setState({ 
                     voices: res,
                     selectedVoice: res[0].name
+                },() => {
+                    defaults.voice = this.state.selectedVoice;
                 });//set available languate list
             }
         })
