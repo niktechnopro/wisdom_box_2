@@ -9,6 +9,22 @@ export const defaults = {
 };
 
 //set defaults based on the voices found on machine
+export const resetVoiceToDefault = () => {
+    getAvailableVoices()
+    .then(result => {
+        if(result.length > 0){
+            defaults.language = result[0].language;
+            defaults.voice = result[0].name;
+            setDefaultTTS();
+        }
+        else{
+            throw new Error("no voices found");
+        }
+    })
+    .catch(error => {
+        console.log("error retrieving available voices: ", error?.message);
+    })
+}
 
 export const isTTSAvailable = () => {//detects if speech engine available or not
     return  Tts.getInitStatus();//returning a promise
@@ -32,20 +48,7 @@ export const loadDefaultTTS = () => {
             defaults = JSON.parse(result);
         }
         else{//place logic on detecting voices and setting default voice right here.
-            getAvailableVoices()
-            .then(result => {
-                if(result.length > 0){
-                    defaults.language = result[0].language;
-                    defaults.voice = result[0].name;
-                    setDefaultTTS();
-                }
-                else{
-                    throw new Error("no voices found");
-                }
-            })
-            .catch(error => {
-                console.log("error retrieving available voices: ", error?.message);
-            })
+            resetVoiceToDefault();
         }
     });
 }
