@@ -5,7 +5,7 @@ export const defaults = {
     language: 'en-IE',
     rate: 0.6,
     pitch: 1.0,
-    voice: "en-us-x-sfg#male_2-local"
+    voice: ""
 };
 
 //set defaults based on the voices found on machine
@@ -15,13 +15,10 @@ export const isTTSAvailable = () => {//detects if speech engine available or not
 }
 
 export const setDefaultTTS = () => {
-    //we need to check what voices are available and make the first as default
-
-
-    Tts.setDefaultLanguage("en-IE");
-    Tts.setDefaultRate(0.6);
-    Tts.setDefaultPitch(1.0);
-    Tts.setDefaultVoice("en-us-x-sfg#male_2-local");
+    Tts.setDefaultLanguage(defaults.language);
+    Tts.setDefaultRate(defaults.rate);
+    Tts.setDefaultPitch(defaults.pitch);
+    Tts.setDefaultVoice(defaults.voice);//says that default voice was not found
     Tts.setDucking(true);
     Tts.setIgnoreSilentSwitch("ignore");
 }
@@ -33,10 +30,22 @@ export const loadDefaultTTS = () => {
         // console.log("result: ", result);
         if(result){//if something in results - load it, else - resetDefault TTS
             defaults = JSON.parse(result);
-            // console.log("use this result object: ", defaults);
         }
-        else{
-            setDefaultTTS();
+        else{//place logic on detecting voices and setting default voice right here.
+            getAvailableVoices()
+            .then(result => {
+                if(result.length > 0){
+                    defaults.language = result[0].language;
+                    defaults.voice = result[0].name;
+                    setDefaultTTS();
+                }
+                else{
+                    throw new Error("no voices found");
+                }
+            })
+            .catch(error => {
+                console.log("error retrieving available voices: ", error?.message);
+            })
         }
     });
 }
@@ -75,4 +84,9 @@ export const saveDefaults = () => {
     // console.log("defaults: ", defaults)
     storeData("tts", defaults);
 }
+
+
+//1.detect speech engine
+//2.if engine detected - read the first 8 voices
+//3.choose the very first one and set it a default
 

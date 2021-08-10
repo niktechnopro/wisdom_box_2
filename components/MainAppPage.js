@@ -425,13 +425,13 @@ const styles = StyleSheet.create({
     exitButton:{
         padding: 10,
         position: "absolute",
-        right: 10,
-        top: 30
+        right: 5,
+        top: 25
     },
     settingsButton:{
         padding: 10,
         position: "absolute",
-        left: 10,
-        top: 30
+        left: 5,
+        top: 25
     }
 })
