@@ -8,17 +8,18 @@ import {
   Animated
 } from "react-native";
 import Slider from '@react-native-community/slider';
-import { isTTSAvailable, setDefaultTTS, getAvailableVoices, setVoiceParameters, speakerTts, saveDefaults, defaults } from "../utils/SpeechEngineModule";
+import { saveUserChoice, setVoiceParameters, defaults, resetToDefaults, getAvailableVoices, userChoice } from "../utils/SpeechEngineModule";
 
 const AvailableVoices = ({voices, setSelectedVoice}) => {
     return(  
         <View style={styles.voicesBox}>    
             {voices.map((value, idx) => {
+                // console.log("value: ", value);
                 return(
                     <TouchableOpacity
                         key = {value.id}
                         style = {styles.voiceCell}
-                        onPress = {() => setSelectedVoice(value.id)}>
+                        onPress = {() => setSelectedVoice(value)}>
                         <Text  style = {styles.voiceText}>{idx+1}.</Text>   
                         <Text style = {styles.voiceText}>
                             {value.language}
@@ -50,15 +51,18 @@ export default class SettingsPage extends Component{
 		super(props)
 		this.state = {
 			voices: [],
-			selectedVoice: "en-US",
+			selectedVoice: userChoice.voice || defaults.voice,
+            language: userChoice.language || defaults.language,
             voices: [],
-			speechRate: defaults.rate,
-			speechPitch: defaults.pitch,
+			speechRate: userChoice.rate || defaults.rate,
+			speechPitch: userChoice.pitch || defaults.pitch,
 		}
         this.fadeAnimation = new Animated.Value(0);
 	}
 
     componentDidMount = () => {
+        console.log("this state: ", this.state)
+        console.log("userChoice: ", userChoice)
         this.setVoices();
         Animated.timing(
             this.fadeAnimation,
@@ -77,17 +81,19 @@ export default class SettingsPage extends Component{
             if(res?.length > 0){
                 this.setState({ 
                     voices: res,
-                    selectedVoice: res[0].name
-                },() => {
-                    defaults.voice = this.state.selectedVoice;
                 });//set available languate list
             }
-        })
+        });
     }
 
-    setVoice = (voice_id) => {
-        this.setState({ selectedVoice: voice_id},()=>{
-            setVoiceParameters(null, null, voice_id);
+    //these methods for changing voice
+    setVoice = (voice) => {
+        console.log("voice: ", voice);
+        this.setState({ 
+            selectedVoice: voice.id,
+            language: voice.language
+        },()=>{
+            setVoiceParameters(null, null, voice.id, voice.language);
         })
     }
 
@@ -102,16 +108,19 @@ export default class SettingsPage extends Component{
             setVoiceParameters(null, pitch, null);
         })
     }
+    //these methods for changing voice
 
     onButtonPress = (action) => {
         switch(action){
             case "reset":
+                console.log("defaults in settings: ", defaults);
                 this.setState({
                     speechRate: defaults.rate,
 			        speechPitch: defaults.pitch,
+                    selectedVoice: defaults.voice,
+                    language: defaults.language
                 },()=>{
-                    this.setVoices();
-                    setDefaultTTS();
+                    resetToDefaults();
                 })
                 break;
             default:
@@ -123,7 +132,7 @@ export default class SettingsPage extends Component{
                       useNativeDriver: true
                     }
                 ).start(()=>{
-                    saveDefaults();//save defaults for next APP load
+                    saveUserChoice();//save defaults for next APP load
                     this.props.pageChange("MainAppPage");
                 });
                 break;

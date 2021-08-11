@@ -22,7 +22,7 @@ class AppWrapper extends Component{
 
 
   componentDidMount = () => {
-    // removeData("isFirstLoad");//just for testing - to remove the key if needed
+    removeData("isFirstLoad");//just for testing - to remove the key if needed
     isTTSAvailable()//checking if speach engine is available
     .then((result) => {
       if(result === "success"){
@@ -54,7 +54,7 @@ class AppWrapper extends Component{
           this.isFirstLoad = false;//setting this flag to <false> will redirect flow to MainAppPage
         }
         else{
-          console.log("no records found - load SettingsPage and set the flag");
+          // console.log("no records found - load SettingsPage and set the flag");
           //we can make a record - so the next time the APK would go to MainAppPage
           this.isFirstLoad = true;
           storeData("isFirstLoad", true);//store it in memory and do not show the settings screen after Welcome again
