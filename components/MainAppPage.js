@@ -167,6 +167,7 @@ class MainAppPage extends Component{
     }
 
     setWidth = ({nativeEvent}) => {
+        console.log("here: ", nativeEvent)
         this.setState({width: nativeEvent.layout.width})
     }
 
@@ -256,11 +257,11 @@ class MainAppPage extends Component{
                         <Icon name="sign-out" size={35} color="blue" />
                     </TouchableOpacity>
                     <View
-                        style = {styles.bookFrame}
+                        style = {[styles.bookFrame, {width: "90%"}]}
                         onLayout={this.setWidth}
                     >
                         <Image
-                            style={styles.insideImage}
+                            style={[styles.insideImage]}
                             resizeMode = {"stretch"}
                             source={require("../assets/book.jpg")}
                         />
@@ -343,7 +344,8 @@ const styles = StyleSheet.create({
         textShadowRadius: 10
     },
     insideImage:{
-        flex: 1
+        height: "100%",
+        width: "100%"
     },
     wisdomTextWrap:{
         position: "absolute",
