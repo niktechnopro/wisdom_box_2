@@ -61,8 +61,6 @@ export default class SettingsPage extends Component{
 	}
 
     componentDidMount = () => {
-        console.log("this state: ", this.state)
-        console.log("userChoice: ", userChoice)
         this.setVoices();
         Animated.timing(
             this.fadeAnimation,
@@ -88,7 +86,7 @@ export default class SettingsPage extends Component{
 
     //these methods for changing voice
     setVoice = (voice) => {
-        console.log("voice: ", voice);
+        // console.log("voice: ", voice);
         this.setState({ 
             selectedVoice: voice.id,
             language: voice.language
@@ -113,7 +111,6 @@ export default class SettingsPage extends Component{
     onButtonPress = (action) => {
         switch(action){
             case "reset":
-                console.log("defaults in settings: ", defaults);
                 this.setState({
                     speechRate: defaults.rate,
 			        speechPitch: defaults.pitch,

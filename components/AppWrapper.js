@@ -78,7 +78,7 @@ class AppWrapper extends Component{
   }
 
   changePageTo = (pagePointer) => {//this is sort of analogy of router
-    console.log("we are in changePageTo: ", this.isFirstLoad);
+    // console.log("we are in changePageTo: ", this.isFirstLoad);
     if(pagePointer === "MainAppPage"){
       if(this.isFirstLoad && this.state.isSpeechEngineDetected){//if this is first load - redirect to SettingsPage
         this.setState({

@@ -167,7 +167,6 @@ class MainAppPage extends Component{
     }
 
     setWidth = ({nativeEvent}) => {
-        console.log("here: ", nativeEvent)
         this.setState({width: nativeEvent.layout.width})
     }
 
@@ -220,7 +219,6 @@ class MainAppPage extends Component{
   
     render(){
         const {dimensions, shouldShowSettings} = this.props;
-        console.log(this.state.isDisabled, this.quoteIntervalTimer)
         
         return(
             <Animated.View 
@@ -257,7 +255,7 @@ class MainAppPage extends Component{
                         <Icon name="sign-out" size={35} color="blue" />
                     </TouchableOpacity>
                     <View
-                        style = {[styles.bookFrame, {width: "90%"}]}
+                        style = {[styles.bookFrame, {width: "95%"}]}
                         onLayout={this.setWidth}
                     >
                         <Image
