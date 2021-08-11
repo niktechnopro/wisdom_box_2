@@ -1,19 +1,23 @@
 import Tts from 'react-native-tts';
 import { storeData, getData, removeData } from "./PersistentStorage";
 
+//1.detect speech engine
+//2.if engine detected - read the first <numbe voices> voices
+//3.choose the very first one and set it a default
+
 export const defaults = {
-    language: '',
+    language: "",
     rate: 0.6,
     pitch: 1.0,
     voice: ""
 };
 
 export let userChoice = {
-    language: '',
+    language: "",
     rate: 0.6,
     pitch: 1.0,
     voice: ""
-}
+};
 
 //set defaults based on the voices found on machine
 export const resetVoiceToDefault = () => {
@@ -31,11 +35,11 @@ export const resetVoiceToDefault = () => {
     .catch(error => {
         console.log("error retrieving available voices: ", error?.message);
     })
-}
+};
 
 export const isTTSAvailable = () => {//detects if speech engine available or not
     return  Tts.getInitStatus();//returning a promise
-}
+};
 
 export const setDefaultTTS = (isUserChoice) => {
     if(isUserChoice){
@@ -53,7 +57,7 @@ export const setDefaultTTS = (isUserChoice) => {
     Tts.setDefaultVoice(defaults.voice);//says that default voice was not found
     Tts.setDucking(true);
     Tts.setIgnoreSilentSwitch("ignore");//this is for iOS
-}
+};
 
 //called from AppWrapper on load
 export const loadDefaultTTS = () => {
@@ -68,7 +72,7 @@ export const loadDefaultTTS = () => {
             resetVoiceToDefault();
         }
     });
-}
+};
 
 export const speakerTts = (quote) => {
     Tts.stop();
@@ -80,7 +84,7 @@ export const getAvailableVoices = async () => {//getting voices available on sys
     .then(result => {
         return result.filter((value) => (value.notInstalled === false) && (value.networkConnectionRequired === false) && (new RegExp("en").test(value.language))).slice(0,9);
     })
-}
+};
 
 
 export const setVoiceParameters = (rate, pitch, voice_id, language) => {
@@ -100,27 +104,27 @@ export const setVoiceParameters = (rate, pitch, voice_id, language) => {
         Tts.setDefaultLanguage(language)
     }
     speakerTts("this is how I talk");//test speech
-}
+};
 
 export const saveUserChoice = () => {
     // console.log("defaults: ", defaults)
     storeData("tts", userChoice);
-}
+};
 
 export const resetToDefaults = () => {
     setDefaultTTS();
-    userChoice = {
-        language: '',
-        rate: 0.6,
-        pitch: 1.0,
-        voice: "" 
-    };
-    removeData("tts");
+    removeData("tts")
+    .then(res => {
+        console.log("res: ", res);
+        userChoice = {
+            language: "",
+            rate: 0.6,
+            pitch: 1.0,
+            voice: "" 
+        };
+    })
     speakerTts("this is how I talk");//test speech
-}
+};
 
 
-//1.detect speech engine
-//2.if engine detected - read the first 8 voices
-//3.choose the very first one and set it a default
 
