@@ -22,7 +22,7 @@ class AppWrapper extends Component{
 
 
   componentDidMount = () => {
-    removeData("isFirstLoad");//just for testing - to remove the key if needed
+    // removeData("isFirstLoad");//just for testing - to remove the key if needed
     isTTSAvailable()//checking if speach engine is available
     .then((result) => {
       if(result === "success"){

@@ -5,7 +5,7 @@ import * as Animatable from 'react-native-animatable';
 import quoteblob from "../assets/quoteblob";
 import { setAnimations } from "../utils/AnimationHelper";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { speakerTts } from "../utils/SpeechEngineModule";
+import { defaults, speakerTts, userChoice } from "../utils/SpeechEngineModule";
 import BackgroundTimer from 'react-native-background-timer';
 
 const interval = 12000; //I'll start with 12 sec interval
@@ -66,8 +66,8 @@ class MainAppPage extends Component{
                     author: this.author ? this.author : this.state.author
                 },() => {
                     let animation = setAnimations();
-                    this.quoteRef.current[`${animation.animationsIn}`](750)
-                    this.state.author && this.authorRef.current[`${animation.autAnimationIn}`](950)
+                    this.quoteRef?.current[`${animation.animationsIn}`](750)
+                    this.state.author && this.authorRef?.current[`${animation.autAnimationIn}`](950)
                 });
             }
         }
@@ -219,6 +219,8 @@ class MainAppPage extends Component{
   
     render(){
         const {dimensions, shouldShowSettings} = this.props;
+        // console.log("defaults: ", defaults);
+        // console.log("userChoice: ", userChoice);
         
         return(
             <Animated.View 

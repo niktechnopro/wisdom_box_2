@@ -23,7 +23,7 @@ export let userChoice = {
 export const resetVoiceToDefault = () => {
     getAvailableVoices()
     .then(result => {
-        if(result.length > 0){
+        if(result.length > 0){//check if something in the array
             defaults.language = result[0].language;
             defaults.voice = result[0].name;
             setDefaultTTS();
@@ -42,27 +42,28 @@ export const isTTSAvailable = () => {//detects if speech engine available or not
 };
 
 export const setDefaultTTS = (isUserChoice) => {
-    if(isUserChoice){
+    if(isUserChoice){//set to userChoice
         Tts.setDefaultLanguage(userChoice.language);
         Tts.setDefaultRate(userChoice.rate);
         Tts.setDefaultPitch(userChoice.pitch);
         Tts.setDefaultVoice(userChoice.voice);//says that default voice was not found
         Tts.setDucking(true);
         Tts.setIgnoreSilentSwitch("ignore");//this is for iOS
-        return;
     }
-    Tts.setDefaultLanguage(defaults.language);
-    Tts.setDefaultRate(defaults.rate);
-    Tts.setDefaultPitch(defaults.pitch);
-    Tts.setDefaultVoice(defaults.voice);//says that default voice was not found
-    Tts.setDucking(true);
-    Tts.setIgnoreSilentSwitch("ignore");//this is for iOS
-    userChoice = {
-        language: "",
-        rate: 0.6,
-        pitch: 1.0,
-        voice: "" 
-    };
+    else{//reset to defaults
+        Tts.setDefaultLanguage(defaults.language);
+        Tts.setDefaultRate(defaults.rate);
+        Tts.setDefaultPitch(defaults.pitch);
+        Tts.setDefaultVoice(defaults.voice);//says that default voice was not found
+        Tts.setDucking(true);
+        Tts.setIgnoreSilentSwitch("ignore");//this is for iOS
+        userChoice = {
+            language: "",
+            rate: 0.6,
+            pitch: 1.0,
+            voice: "" 
+        };
+    }
 };
 
 //called from AppWrapper on load
@@ -107,7 +108,7 @@ export const setVoiceParameters = (rate, pitch, voice_id, language) => {
         userChoice.voice = voice_id;
         userChoice.language = language;
         Tts.setDefaultVoice(voice_id);
-        Tts.setDefaultLanguage(language)
+        Tts.setDefaultLanguage(language);
     }
     speakerTts("this is how I talk");//test speech
 };

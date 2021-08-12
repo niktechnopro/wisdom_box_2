@@ -129,7 +129,7 @@ export default class SettingsPage extends Component{
                       useNativeDriver: true
                     }
                 ).start(()=>{
-                    saveUserChoice();//save defaults for next APP load
+                    saveUserChoice();//save defaults in AsyncStorage for next APP load
                     this.props.pageChange("MainAppPage");
                 });
                 break;
