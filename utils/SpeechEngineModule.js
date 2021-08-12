@@ -57,6 +57,12 @@ export const setDefaultTTS = (isUserChoice) => {
     Tts.setDefaultVoice(defaults.voice);//says that default voice was not found
     Tts.setDucking(true);
     Tts.setIgnoreSilentSwitch("ignore");//this is for iOS
+    userChoice = {
+        language: "",
+        rate: 0.6,
+        pitch: 1.0,
+        voice: "" 
+    };
 };
 
 //called from AppWrapper on load
@@ -114,15 +120,6 @@ export const saveUserChoice = () => {
 export const resetToDefaults = () => {
     setDefaultTTS();
     removeData("tts")
-    .then(res => {
-        console.log("res: ", res);
-        userChoice = {
-            language: "",
-            rate: 0.6,
-            pitch: 1.0,
-            voice: "" 
-        };
-    })
     speakerTts("this is how I talk");//test speech
 };
 
