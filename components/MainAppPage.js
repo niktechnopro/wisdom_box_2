@@ -10,11 +10,11 @@ import BackgroundTimer from 'react-native-background-timer';
 
 const interval = 12000; //I'll start with 12 sec interval
 
-const Button = ({getNewQuote, disabled}) => {
+const Button = ({getNewQuote, disabled, isPortrait}) => {
     return(
         <TouchableOpacity//after playing with Pressable component I decided not to use it here
             disabled={disabled}
-            style={[styles.button, disabled && {backgroundColor: "#fff"}]}
+            style={[styles.button, disabled && {backgroundColor: "#fff"}, {marginTop: isPortrait ? 20 : 5}]}
             onPress = {getNewQuote}
         >
             <Text style={styles.buttonText}>{disabled ? "Disabled" : "Get a Quote"}</Text>
@@ -32,7 +32,8 @@ class MainAppPage extends Component{
             direction: "normal",
             width: 0,
             switchValue: false,
-            isDisabled: false
+            isDisabled: false,
+            isPortrait: true //default
         }
         this.authorRef = React.createRef();
         this.quoteRef = React.createRef();
@@ -75,6 +76,19 @@ class MainAppPage extends Component{
         if(this.state.isDisabled && !this.quoteIntervalTimer && prevProps.shouldShowSettings && !this.props.shouldShowSettings){
             //relaunch auto - timer
             this.quoteAutoTimer();
+        }
+        //to check if Vertical
+        if(prevProps.dimensions.height !== this.props.dimensions.height){//detecting if phone isLandscape or not
+            if(this.props.dimensions.height > prevProps.dimensions.height){
+                this.setState({
+                    isPortrait: true
+                })
+            }
+            else{
+                this.setState({
+                    isPortrait: false
+                })
+            }
         }
     }
 
@@ -309,10 +323,14 @@ class MainAppPage extends Component{
                     </View>
                     <View style={styles.buttonFrame}>
                         <Button
+                            isPortrait={this.state.isPortrait}
                             disabled={this.state.isDisabled} 
                             getNewQuote={this.startQuoteAnimations}
                         />
                     </View>
+                    {this.state.isPortrait && <View style={styles.footer}>
+                        <Text style={styles.fText}>{'\u00A9'} Fun FCC Project by Nik</Text>
+                    </View>}
                 </ImageBackground>
             </Animated.View>
         )
@@ -381,8 +399,10 @@ const styles = StyleSheet.create({
         fontStyle: 'italic'
     },
     buttonFrame:{
-        flex: 1,
-        marginBottom: 10
+        // flex: 1,
+        marginBottom: 15,
+        // borderWidth: 1,
+        // borderColor: "red"
     },
     button:{
         alignItems: 'center',
@@ -399,7 +419,7 @@ const styles = StyleSheet.create({
             width: 0,
             height: 1
         },
-        marginVertical: 20,
+        marginTop: 20
     },
     buttonText:{
         fontSize: 30,
@@ -435,5 +455,18 @@ const styles = StyleSheet.create({
         position: "absolute",
         left: 5,
         top: 25
+    },
+    footer:{
+        margin: 1,
+        marginBottom: 20
+    },
+    fText: {
+        fontSize: 31,
+		// color: "#2980b6"
+		color: "#fff",
+		textAlign: 'center',
+		textShadowColor: '#000', 
+		textShadowOffset: { width: 1.5, height: 2.5 }, 
+		textShadowRadius: 1
     }
 })
