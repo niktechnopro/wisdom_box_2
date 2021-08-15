@@ -329,7 +329,12 @@ class MainAppPage extends Component{
                         />
                     </View>
                     {this.state.isPortrait && <View style={styles.footer}>
-                        <Text style={styles.fText}>{'\u00A9'} Fun FCC Project by Nik</Text>
+                        <Text 
+                            style={styles.fText}
+                            numberOfLines={1}
+                        >
+                                {'\u00A9'} Fun FCC Project by Nik
+                        </Text>
                     </View>}
                 </ImageBackground>
             </Animated.View>
