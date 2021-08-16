@@ -466,7 +466,7 @@ const styles = StyleSheet.create({
         marginBottom: 20
     },
     fText: {
-        fontSize: 31,
+        fontSize: 27,
 		// color: "#2980b6"
 		color: "#fff",
 		textAlign: 'center',
