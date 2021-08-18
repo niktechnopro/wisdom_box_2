@@ -96,15 +96,15 @@ export default class SettingsPage extends Component{
     }
 
     setVoiceRate = (rate) => {
-        this.setState({speechRate: rate},() => {
-            setVoiceParameters(rate, null, null);
-        })
+        this.setState({
+            speechRate: Math.round(rate * 10) / 10
+        });
     }
 
     setVoicePitch = (pitch) => {
-        this.setState({speechPitch: pitch},() => {
-            setVoiceParameters(null, pitch, null);
-        })
+        this.setState({
+            speechPitch: Math.round(pitch * 10) / 10
+        });
     }
     //these methods for changing voice
 
@@ -157,14 +157,20 @@ export default class SettingsPage extends Component{
                                     Rate: 
                             </Text>
                             <Slider
-                                style={{flex: 1, transform:[{ scale: 2 }]}}
+                                style={{flex: 1, padding: 10, transform:[{ scale: 2 }]}}
                                 minimumValue={0.01}
                                 maximumValue={1}
                                 value={this.state.speechRate}
                                 minimumTrackTintColor="rgba(0, 122, 255, 0.5)"
                                 maximumTrackTintColor="#000000"
-                                onSlidingComplete={this.setVoiceRate}
+                                onValueChange={this.setVoiceRate}
+                                onSlidingComplete={() => setVoiceParameters(this.state.speechRate, null, null)}
                             />
+                            <Text
+                                style={[styles.label, {width: "20%"}]}
+                                >
+                                    {this.state.speechRate} 
+                            </Text>
                         </View>
                         <View style={styles.sliderContainer}>
                             <Text
@@ -179,8 +185,14 @@ export default class SettingsPage extends Component{
                                 value={this.state.speechPitch}
                                 minimumTrackTintColor="rgba(0, 122, 255, 0.5)"
                                 maximumTrackTintColor="#000000"
-                                onSlidingComplete={this.setVoicePitch}
+                                onValueChange={this.setVoicePitch}
+                                onSlidingComplete={() => setVoiceParameters(null, this.state.speechPitch, null)}
                             />
+                            <Text
+                                style={[styles.label, {width: "20%"}]}
+                                >
+                                    {this.state.speechPitch} 
+                            </Text>
                         </View>
                         <View style={{flex: 1}}>
 				          	<Text
@@ -225,7 +237,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
         justifyContent: "center",
 		backgroundColor: "#F5FCFF",
-		paddingBottom: 50
+		paddingBottom: 50,
 	},
     title:{
 		padding: 10,
@@ -247,7 +259,7 @@ const styles = StyleSheet.create({
     	flexDirection: "row",
     	justifyContent: "space-between",
     	alignItems: "center",
-        margin: 15,
+        marginVertical: 15
   	},
     voicesBox: {
         flex: 1,
