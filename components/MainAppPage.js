@@ -48,6 +48,11 @@ class MainAppPage extends Component{
     componentDidMount = () => {
         BackHandler.addEventListener('hardwareBackPress', () => true);//disables hardware back button
         this.props.isSpeechEngineDetected && speakerTts(this.state.quote);//first fraze
+        if(this.props.dimensions.height < this.props.dimensions.width){//resets to landscape mode if user holds it like that on start
+            this.setState({
+                isPortrait: false
+            })
+        }
     }
 
     componentWillUnmount = () => {

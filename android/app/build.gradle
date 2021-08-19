@@ -132,8 +132,8 @@ android {
         applicationId "com.wbox"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 30
-        versionName "3.0"
+        versionCode 31
+        versionName "3.1"
     }
     splits {
         abi {
