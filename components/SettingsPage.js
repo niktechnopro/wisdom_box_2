@@ -56,6 +56,8 @@ export default class SettingsPage extends Component{
             voices: [],
 			speechRate: userChoice.rate || defaults.rate,
 			speechPitch: userChoice.pitch || defaults.pitch,
+            speechRateValue: userChoice.rate || defaults.rate,
+            speechPitchValue: userChoice.pitch || defaults.pitch,
 		}
         this.fadeAnimation = new Animated.Value(0);
 	}
@@ -97,14 +99,28 @@ export default class SettingsPage extends Component{
 
     setVoiceRate = (rate) => {
         this.setState({
-            speechRate: Math.round(rate * 10) / 10
+            speechRate: Math.round(rate * 10) / 10//this construct to have 1 decimal
         });
     }
 
     setVoicePitch = (pitch) => {
         this.setState({
-            speechPitch: Math.round(pitch * 10) / 10
+            speechPitch: Math.round(pitch * 10) / 10//this construct to have 1 decimal
         });
+    }
+
+    onRateSliderStop = () => {
+        setVoiceParameters(this.state.speechRate, null, null);
+        this.setState({
+            speechRateValue: this.state.speechRate
+        })
+    }
+
+    onPitchSliderStop = () => {
+        setVoiceParameters(null, this.state.speechPitch, null);
+        this.setState({
+            speechPitchValue: this.state.speechPitch
+        })
     }
     //these methods for changing voice
 
@@ -114,6 +130,8 @@ export default class SettingsPage extends Component{
                 this.setState({
                     speechRate: defaults.rate,
 			        speechPitch: defaults.pitch,
+                    speechRateValue: defaults.rate,
+                    speechPitchValue: defaults.pitch,
                     selectedVoice: defaults.voice,
                     language: defaults.language
                 },()=>{
@@ -158,13 +176,14 @@ export default class SettingsPage extends Component{
                             </Text>
                             <Slider
                                 style={{flex: 1, padding: 10, transform:[{ scale: 2 }]}}
-                                minimumValue={0.01}
+                                minimumValue={0}
                                 maximumValue={1}
-                                value={this.state.speechRate}
+                                step={0.1}
+                                value={this.state.speechRateValue}
                                 minimumTrackTintColor="rgba(0, 122, 255, 0.5)"
                                 maximumTrackTintColor="#000000"
                                 onValueChange={this.setVoiceRate}
-                                onSlidingComplete={() => setVoiceParameters(this.state.speechRate, null, null)}
+                                onSlidingComplete={this.onRateSliderStop}
                             />
                             <Text
                                 style={[styles.label, {width: "20%"}]}
@@ -180,13 +199,14 @@ export default class SettingsPage extends Component{
                             </Text>
                             <Slider
                                 style={{flex: 1, transform:[{ scale: 2 }]}}
-                                minimumValue={0.1}
+                                minimumValue={0}
                                 maximumValue={2}
-                                value={this.state.speechPitch}
+                                step={0.1}
+                                value={this.state.speechPitchValue}
                                 minimumTrackTintColor="rgba(0, 122, 255, 0.5)"
                                 maximumTrackTintColor="#000000"
                                 onValueChange={this.setVoicePitch}
-                                onSlidingComplete={() => setVoiceParameters(null, this.state.speechPitch, null)}
+                                onSlidingComplete={this.onPitchSliderStop}
                             />
                             <Text
                                 style={[styles.label, {width: "20%"}]}
