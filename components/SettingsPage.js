@@ -272,7 +272,7 @@ const styles = StyleSheet.create({
     label: {
     	textAlign: "center",
     	padding: 10,
-    	fontSize: 20,
+    	fontSize: 18,
     	fontWeight: "bold",
   	},
     sliderContainer: {
