@@ -151,3 +151,6 @@ const styles = StyleSheet.create({
   }
 });
 
+//custom Dimensions hook: https://www.reactnativeschool.com/building-a-dimensions-hook-in-react-native
+
+

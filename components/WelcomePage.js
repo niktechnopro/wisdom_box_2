@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, Animated, Easing } from "react-native";
 
 
 const AnimatedProgressBar = ({setProgress, available_width}) => {
-	// const progress = new Animated.Value(0);
+	
 	const progress = useRef(new Animated.Value(0)).current;
 
 	const [width, setWidth] = useState(available_width); 
