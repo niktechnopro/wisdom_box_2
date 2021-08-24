@@ -480,3 +480,5 @@ const styles = StyleSheet.create({
 		textShadowRadius: 1
     }
 })
+
+// https://medium.com/@songyishu.yang/react-native-switch-recolor-resize-6dc6a2ce183a - resize, recolor switch
