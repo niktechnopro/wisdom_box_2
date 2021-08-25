@@ -482,3 +482,5 @@ const styles = StyleSheet.create({
 })
 
 // https://medium.com/@songyishu.yang/react-native-switch-recolor-resize-6dc6a2ce183a - resize, recolor switch
+// https://github.com/ocetnik/react-native-background-timer - react native background timer
+// https://www.npmjs.com/package/react-native-tts - react native text to speech
