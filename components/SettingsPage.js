@@ -175,7 +175,7 @@ export default class SettingsPage extends Component{
                                     Rate: 
                             </Text>
                             <Slider
-                                style={{flex: 1, padding: 10, transform:[{ scale: 2 }]}}
+                                style={{flex: 1, transform:[{ scale: 2 }]}}
                                 minimumValue={0}
                                 maximumValue={1}
                                 step={0.1}
@@ -191,14 +191,14 @@ export default class SettingsPage extends Component{
                                     {this.state.speechRate} 
                             </Text>
                         </View>
-                        <View style={styles.sliderContainer}>
+                        <View style={[styles.sliderContainer, {width: sliderWidth}]}>
                             <Text
                                 style={[styles.label, {width: "30%"}]}
                                 >
                                     Pitch: 
                             </Text>
                             <Slider
-                                style={{flex: 1, transform:[{ scale: 2 }]}}
+                                style={{flex: 1, padding: 10, transform:[{ scale: 2 }]}}
                                 minimumValue={0}
                                 maximumValue={2}
                                 step={0.1}
@@ -223,7 +223,8 @@ export default class SettingsPage extends Component{
 			          	</View>
                         <View style={styles.selectedVoiceContainer}>
 				          	<Text
-				            style={styles.subLabel}
+                                numberOfLines={1}
+				                style={styles.subLabel}
 				          	>
                                 selected voice: {this.state.selectedVoice}
 				          	</Text>
@@ -233,7 +234,7 @@ export default class SettingsPage extends Component{
                             voices={this.state.voices}
                             setSelectedVoice={this.setVoice}
                         />}
-                        <View style={{flexDirection: "row", justifyContent: "space-around"}}>
+                        <View style={styles.buttonsContainer}>
                             <Button 
                                 onPress={()=>this.onButtonPress("reset")}
                                 text="Reset"
@@ -305,7 +306,8 @@ const styles = StyleSheet.create({
         textAlign: "left",
         padding: 4,
         fontSize: 18,
-        fontWeight: "bold"
+        fontWeight: "bold",
+        width: "90%"
     },
     selectedVoiceContainer: {
         height: 50, 
@@ -338,4 +340,8 @@ const styles = StyleSheet.create({
         textShadowOffset: {width: -1, height: 1},
         textShadowRadius: 10
     },
+    buttonsContainer: {
+        flexDirection: "row", 
+        justifyContent: "space-around"
+    }
 })
