@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Component } from "react";
+import React, { Component } from "react";
 import { StyleSheet, View, Dimensions, AppState } from "react-native";
 import WelcomePage from "./WelcomePage";
 import MainAppPage from "./MainAppPage";
