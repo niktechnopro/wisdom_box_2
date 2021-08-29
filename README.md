@@ -20,4 +20,4 @@ APP deployed at Google Play: https://play.google.com/store/apps/details?id=com.w
 ![screenshot 2](screenshots/settingspage.png "project screenshot")
 ![screenshot 3](screenshots/mainapppageone.png "project screenshot")
 ![screenshot 3](screenshots/mainapppagetwo.png "project screenshot")
-# wisdom-box
+
