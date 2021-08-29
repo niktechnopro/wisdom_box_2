@@ -17,7 +17,7 @@ APP deployed at Google Play: https://play.google.com/store/apps/details?id=com.w
 
 ## Project Screenshots:
 ![screenshot 1](screenshots/welcomepage.png "project screenshot")
-![screenshot 2](screenshots/settings.png "project screenshot")
+![screenshot 2](screenshots/settingspage.png "project screenshot")
 ![screenshot 3](screenshots/mainapppageone.png "project screenshot")
 ![screenshot 3](screenshots/mainapppagetwo.png "project screenshot")
 # wisdom-box
