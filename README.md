@@ -4,7 +4,7 @@
 
 APP development - from idea to submitting to Google Play store: https://www.youtube.com/playlist?list=PL_HQqUUxw6OcyVFa0xW142Bv467nsJjlz
 
-In the project directory, you can run:
+In the project directory, run to launch the project:
 
 ### `npm run start` or `react-native run-android`
 
