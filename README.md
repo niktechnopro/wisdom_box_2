@@ -1,6 +1,6 @@
 # wisdom box 3.0
 
-## Wisdom Box APP development
+## Wisdom Box APP development - from idea to submitting to Google Play
 
 APP development - from idea to submitting to Google Play store: https://www.youtube.com/playlist?list=PL_HQqUUxw6OcyVFa0xW142Bv467nsJjlz
 
