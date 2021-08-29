@@ -1,15 +1,15 @@
 # wisdom box 3.0
 
+## Wisdom Box APP development
+
+APP development - from idea to submitting to Google Play store: https://www.youtube.com/playlist?list=PL_HQqUUxw6OcyVFa0xW142Bv467nsJjlz
+
 In the project directory, you can run:
 
 ### `npm run start` or `react-native run-android`
 
 Open development options:
 ### `adb shell input keyevent 82`
-
-### Development
-
-APP development - from idea to submitting to Google Play store: https://studio.youtube.com/channel/UCINLlkGAB1EDOcXrHfr8fMg/playlists
 
 ### Deployment
 
