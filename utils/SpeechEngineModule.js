@@ -20,13 +20,13 @@ export let userChoice = {
 };
 
 //set defaults based on the voices found on machine
-export const resetVoiceToDefault = () => {
-    getAvailableVoices()
+export const resetVoiceToDefault = (isResetButtonPressed) => {
+    return getAvailableVoices()
     .then(result => {
         if(result.length > 0){//check if something in the array
             defaults.language = result[0].language;
             defaults.voice = result[0].name;
-            setDefaultTTS();
+            setDefaultTTS(null, isResetButtonPressed);
         }
         else{
             throw new Error("no voices found");
@@ -41,7 +41,7 @@ export const isTTSAvailable = () => {//detects if speech engine available or not
     return  Tts.getInitStatus();//returning a promise
 };
 
-export const setDefaultTTS = (isUserChoice) => {
+export const setDefaultTTS = (isUserChoice, isResetButtonPressed) => {
     if(isUserChoice){//set to userChoice
         Tts.setDefaultLanguage(userChoice.language);
         Tts.setDefaultRate(userChoice.rate);
@@ -63,6 +63,9 @@ export const setDefaultTTS = (isUserChoice) => {
             pitch: 1.0,
             voice: "" 
         };
+        if(isResetButtonPressed){
+            speakerTts("this is how I talk");//test speech
+        }
     }
 };
 
@@ -72,6 +75,7 @@ export const loadDefaultTTS = () => {
     .then(result => {
         //if something in results - load it, else - resetDefault TTS
         if(result){
+            // console.log("result, option 1: ", result)
             userChoice = JSON.parse(result);
             if(userChoice.voice) setDefaultTTS(true);
         }
@@ -114,15 +118,23 @@ export const setVoiceParameters = (rate, pitch, voice_id, language) => {
 };
 
 export const saveUserChoice = () => {
-    // console.log("defaults: ", defaults)
+    if(!userChoice.voice){//that means the voice is stil default
+        userChoice.voice = defaults.voice;
+    }
+    if(!userChoice.language){//that means the language is still default
+        userChoice.language = defaults.language;
+    }
     storeData("tts", userChoice);
 };
 
 export const resetToDefaults = () => {
-    setDefaultTTS();
-    removeData("tts")
-    speakerTts("this is how I talk");//test speech
+    removeData("tts");
+    return resetVoiceToDefault(true);//boolean <true> would correspond to reset button
 };
+
+export const stopSpeach = () => {
+    Tts.stop();
+}
 
 
 

@@ -127,16 +127,17 @@ export default class SettingsPage extends Component{
     onButtonPress = (action) => {
         switch(action){
             case "reset":
-                this.setState({
-                    speechRate: defaults.rate,
-			        speechPitch: defaults.pitch,
-                    speechRateValue: defaults.rate,
-                    speechPitchValue: defaults.pitch,
-                    selectedVoice: defaults.voice,
-                    language: defaults.language
-                },()=>{
-                    resetToDefaults();
-                })
+                resetToDefaults()
+                .then(res => {
+                    this.setState({
+                        speechRate: defaults.rate,
+                        speechPitch: defaults.pitch,
+                        speechRateValue: defaults.rate,
+                        speechPitchValue: defaults.pitch,
+                        selectedVoice: defaults.voice,
+                        language: defaults.language
+                    });
+                });
                 break;
             default:
                 Animated.timing(
@@ -176,7 +177,7 @@ export default class SettingsPage extends Component{
                             </Text>
                             <Slider
                                 style={{flex: 1, transform:[{ scale: 2 }]}}
-                                minimumValue={0}
+                                minimumValue={0.1}
                                 maximumValue={1}
                                 step={0.1}
                                 value={this.state.speechRateValue}
@@ -199,7 +200,7 @@ export default class SettingsPage extends Component{
                             </Text>
                             <Slider
                                 style={{flex: 1, padding: 10, transform:[{ scale: 2 }]}}
-                                minimumValue={0}
+                                minimumValue={0.1}
                                 maximumValue={2}
                                 step={0.1}
                                 value={this.state.speechPitchValue}

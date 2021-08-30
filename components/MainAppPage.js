@@ -5,7 +5,7 @@ import * as Animatable from 'react-native-animatable';
 import quoteblob from "../assets/quoteblob";
 import { setAnimations } from "../utils/AnimationHelper";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { defaults, speakerTts, userChoice } from "../utils/SpeechEngineModule";
+import { defaults, speakerTts, userChoice, stopSpeach } from "../utils/SpeechEngineModule";
 import BackgroundTimer from 'react-native-background-timer';
 
 const interval = 12000; //I'll start with 12 sec interval
@@ -225,6 +225,7 @@ class MainAppPage extends Component{
     }
 
     exitAppAction = () => {
+        stopSpeach();
         BackHandler.exitApp();
     }
 
